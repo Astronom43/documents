@@ -1,21 +1,21 @@
 package ru.sergsubin.documens.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "employee")
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
-@RequiredArgsConstructor
-@EqualsAndHashCode
 public class Employee {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_data_seq")
-    @SequenceGenerator(name = "m_data_seq",sequenceName = "m_data_sq", allocationSize = 1)
+    @SequenceGenerator(name = "m_data_seq", sequenceName = "m_data_sq", allocationSize = 1)
     private Long id;
 
     @Column(name = "login")
@@ -42,13 +42,16 @@ public class Employee {
 
     @ManyToMany
     @JoinTable(name = "employee_role", joinColumns = @JoinColumn(name = "id_employee"),
-    inverseJoinColumns = @JoinColumn(name = "id_role"))
-    private Set<Role> roles;
+            inverseJoinColumns = @JoinColumn(name = "id_role"))
+  //  @JsonIgnore
+    private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "employee")
-    private Set<Instruction> instructions;
+    @JsonIgnore
+    private Set<Instruction> instructions = new HashSet<>();
 
     @OneToMany(mappedBy = "employee")
-    private Set<Report> reports;
+    @JsonIgnore
+    private Set<Report> reports = new HashSet<>();
 
 }
