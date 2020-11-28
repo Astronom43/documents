@@ -14,3 +14,9 @@ VALUES (3, 1),
 INSERT INTO type(id, name_type, kod_type)
 VALUES (5,'Входящие документы','1'),
        (6,'Исходящие документы','2');
+
+INSERT INTO instruction(id, instruction, data_control, id_decision, id_employee, id_owner)
+VALUES(7, 'inst1','2020-12-31',null,4,null),
+      (8, 'inst2','2020-12-31',null,4,null),
+      (9, 'inst1_1','2020-12-31',null,4,7),
+      (10, 'inst1_2','2020-12-31',null,4,7)

@@ -1,6 +1,7 @@
 package ru.sergsubin.documens.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -19,20 +20,23 @@ public class Role implements Serializable {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "m_data_seq")
     @SequenceGenerator(name = "m_data_seq",sequenceName = "m_data_sq", allocationSize = 1)
+    @JsonView(Views.IdBody.class)
     private Long id;
 
     @Column(name = "title")
     @NonNull
+    @JsonView(Views.IdBody.class)
     private String title;
 
     @Column(name = "code")
     @NonNull
+    @JsonView(Views.IdBody.class)
     private String code;
 
     @ManyToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
     @JoinTable(name = "employee_role", joinColumns = @JoinColumn(name = "id_role"),
     inverseJoinColumns = @JoinColumn(name = "id_employee"))
-    @JsonIgnore
+    /*@JsonView(Views.IdBodyRef.class)*/
     private Set<Employee> employees;
 
     @Override

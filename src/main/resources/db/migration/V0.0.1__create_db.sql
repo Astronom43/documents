@@ -1,6 +1,6 @@
 CREATE SEQUENCE m_data_sq MINVALUE 500 OWNED BY NONE;
 
-CREATE TABLE respondent
+CREATE TABLE respondent /* */
 (
     id         BIGINT DEFAULT (nextval('m_data_sq')) PRIMARY KEY,
     name       VARCHAR(100) NOT NULL,
@@ -60,10 +60,11 @@ CREATE TABLE decision
 CREATE TABLE instruction
 (
     id           BIGINT DEFAULT (nextval('m_data_sq')) PRIMARY KEY,
-    instruction  VARCHAR,
+    instruction  text,
     data_control TIMESTAMP,
     id_decision  BIGINT REFERENCES decision (id),
-    id_employee  BIGINT REFERENCES employee (id)
+    id_employee  BIGINT REFERENCES employee (id),
+    id_owner BIGINT REFERENCES instruction(id)
 );
 
 CREATE TABLE report
@@ -101,6 +102,7 @@ CREATE TABLE document_decision(
     id_decision BIGINT REFERENCES decision(id),
     PRIMARY KEY (id_decision,id_document)
 );
+
 CREATE TABLE document_report(
     id_document BIGINT REFERENCES document(id),
     id_report BIGINT REFERENCES report(id),
@@ -115,6 +117,7 @@ CREATE TABLE file
     url         VARCHAR,
     id_document BIGINT REFERENCES document (id)
 );
+
 
 
 
