@@ -2,16 +2,18 @@ package ru.sergsubin.documens.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "file")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class File {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_data_sq")
@@ -27,6 +29,4 @@ public class File {
     @ManyToOne
     @JoinColumn( name = "id_document")
     private Document document;
-
-
 }

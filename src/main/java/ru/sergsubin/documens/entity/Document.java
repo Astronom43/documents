@@ -1,20 +1,32 @@
 package ru.sergsubin.documens.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "document")
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
 public class Document {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_data_sq")
-    @SequenceGenerator(name = "m_data_sq",sequenceName = "m_data_sq",allocationSize = 1)
+    @SequenceGenerator(name = "m_data_sq", sequenceName = "m_data_sq", allocationSize = 1)
     private Long id;
 
     @Column(name = "nom")
@@ -45,15 +57,14 @@ public class Document {
     @JoinColumn(name = "id_type")
     private Type type;
 
-    @OneToMany (mappedBy = "document")
+    @OneToMany(mappedBy = "document")
     private Set<File> files;
 
     @OneToOne(optional = false)
-    @JoinTable(name = "document_decision",joinColumns = @JoinColumn(name = "id_document"),
-    inverseJoinColumns = @JoinColumn(name = "id_decision"))
+    @JoinTable(
+            name = "document_decision",
+            joinColumns = @JoinColumn(name = "id_document"),
+            inverseJoinColumns = @JoinColumn(name = "id_decision")
+    )
     private Decision decision;
-
-
-
-
 }

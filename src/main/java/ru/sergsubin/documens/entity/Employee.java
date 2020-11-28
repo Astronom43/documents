@@ -2,17 +2,30 @@ package ru.sergsubin.documens.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.*;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "employee")
-@Data
-@NoArgsConstructor
 public class Employee {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_data_seq")
@@ -27,7 +40,7 @@ public class Employee {
 
     @Column(name = "password")
     @NonNull
-  /*  @JsonView(Views.IdBody.class)*/
+    /*  @JsonView(Views.IdBody.class)*/
     private String password;
 
     @Column(name = "is_active")
@@ -48,21 +61,24 @@ public class Employee {
     @JsonView(Views.IdBody.class)
     private String lastName;
 
-    @ManyToMany
-    @JoinTable(name = "employee_role", joinColumns = @JoinColumn(name = "id_employee"),
-            inverseJoinColumns = @JoinColumn(name = "id_role"))
-  //  @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "employee_role",
+            joinColumns = @JoinColumn(name = "id_employee"),
+            inverseJoinColumns = @JoinColumn(name = "id_role")
+    )
+   //   @JsonIgnore
     @JsonView(Views.IdBodyRef.class)
-    private Set<Role> roles = new HashSet<>();
+    private List<Role> roles;
 
     @OneToMany(mappedBy = "employee")
     @JsonIgnore
-    @JsonView(Views.IdBodyRef.class)
-    private Set<Instruction> instructions = new HashSet<>();
+   // @JsonView(Views.IdBodyRef.class)
+    private List<Instruction> instructions;
 
     @OneToMany(mappedBy = "employee")
     @JsonIgnore
-    @JsonView(Views.IdBodyRef.class)
-    private Set<Report> reports = new HashSet<>();
+   // @JsonView(Views.IdBodyRef.class)
+    private List<Report> reports;
 
 }
