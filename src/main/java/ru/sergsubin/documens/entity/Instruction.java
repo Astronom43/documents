@@ -2,24 +2,38 @@ package ru.sergsubin.documens.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "instruction")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Instruction {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_date_seq")
-    @SequenceGenerator(name = "m_data_seq",sequenceName = "m_data_sq",allocationSize = 1)
+    @SequenceGenerator(name = "m_data_seq", sequenceName = "m_data_sq", allocationSize = 1)
     @JsonView(Views.IdBody.class)
     private Long id;
 
@@ -48,33 +62,8 @@ public class Instruction {
     @JsonIgnore
     private Instruction owner;
 
-    @OneToMany (mappedBy = "owner")
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_owner")
     @JsonView(Views.IdBodyRef.class)
-    private Set<Instruction> instructions;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Instruction that = (Instruction) o;
-
-        if (!id.equals(that.id)) return false;
-        if (instruction != null ? !instruction.equals(that.instruction) : that.instruction != null) return false;
-        if (dataControl != null ? !dataControl.equals(that.dataControl) : that.dataControl != null) return false;
-        if (decision != null ? !decision.equals(that.decision) : that.decision != null) return false;
-        if (employee != null ? !employee.equals(that.employee) : that.employee != null) return false;
-        if (owner != null ? !owner.equals(that.owner) : that.owner != null) return false;
-        return instructions != null ? instructions.equals(that.instructions) : that.instructions == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + (instruction != null ? instruction.hashCode() : 0);
-        result = 31 * result + (dataControl != null ? dataControl.hashCode() : 0);
-        result = 31 * result + (decision != null ? decision.hashCode() : 0);
-        result = 31 * result + (employee != null ? employee.hashCode() : 0);
-        return result;
-    }
+    private List<Instruction> instructions;
 }

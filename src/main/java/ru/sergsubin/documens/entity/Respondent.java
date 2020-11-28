@@ -5,13 +5,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "respondent")
-@NoArgsConstructor
-@AllArgsConstructor
-@RequiredArgsConstructor
-@Data
 public class Respondent {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_seq")
@@ -57,6 +56,7 @@ public class Respondent {
 
     @OneToMany (mappedBy = "respondentFrom")
     private Set<Document> respFrom;
+
     @OneToMany(mappedBy = "respondentTo")
     private Set<Document> respTo;
 }

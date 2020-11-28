@@ -2,16 +2,17 @@ package ru.sergsubin.documens.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "report")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Report {
     @Id
     @Column(name = "id")

@@ -15,10 +15,9 @@ public abstract class AbstractService<T, R extends PagingAndSortingRepository<T,
         this.repo = repo;
     }
 
-
     public ResponseEntity<List<T>> findAll() {
         Iterable<T> all = repo.findAll();
-        if (all.iterator().hasNext()) return new ResponseEntity<List<T>>((List<T>) all, HttpStatus.OK);
+        if (all.iterator().hasNext()) return new ResponseEntity<>((List<T>) all, HttpStatus.OK);
         else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -35,7 +34,7 @@ public abstract class AbstractService<T, R extends PagingAndSortingRepository<T,
         repo.deleteById(id);
     }
 
-    public ResponseEntity<T> save(Long id, T t) throws IllegalArgumentException {
+    public ResponseEntity<T> save(Long id, T t) {
         Optional<T> byIdFromDb = repo.findById(id);
 
         if (byIdFromDb.isPresent()) {
@@ -45,7 +44,5 @@ public abstract class AbstractService<T, R extends PagingAndSortingRepository<T,
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
-
 
 }
